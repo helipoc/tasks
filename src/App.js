@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useState } from "react"
+import { Input } from "antd";
+import Todos from "./Todos";
 function App() {
+  const [todos, setTodo] = useState([])
+  const [text, setText] = useState("")
+  const handlSub = (e) => {
+    if (e.key == "Enter") {
+      setTodo(todo => [...todo, text])
+      setText('')
+    }
+  }
+
+  const handlDel = (id) => {
+    setTodo(todo => [...todo].filter((t, i) => i != id))
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <center>
+        <div style={{ marginTop: "5em", width: "50%" }}>
+          <Input placeholder="Add Task ... " onKeyDown={handlSub} onChange={e => setText(e.target.value)} value={text} />
+        </div>
+        <br />
+        <Todos todos={todos} handl={handlDel} />
+      </center>
+    </>)
 }
 
 export default App;
